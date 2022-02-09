@@ -1,5 +1,10 @@
 package MeEmpresta;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 public class Emprestimo {
 
 	private int id;
@@ -53,11 +58,15 @@ public class Emprestimo {
 	}
 	public void confirmarDevolucao() {
 		this.status = 4;
+		Date dataAtual = new Date();
+		this.dataDevolucaoReal = new SimpleDateFormat("dd/MM/yyyy").format(dataAtual);
 	}
 	
 	public boolean verificarAtraso() {
-		//To do...
-		return false;
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDateTime dataReal = LocalDateTime.parse(this.dataDevolucaoReal, format);
+		LocalDateTime dataLimite = LocalDateTime.parse(this.dataDevolucaoLimite, format);
+		return dataReal.isBefore(dataLimite);
 	}
 	
 }
